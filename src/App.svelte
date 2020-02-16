@@ -14,10 +14,17 @@
 	]
 
 	const items = [
-		{ quantity: 2, description: 'Pants', taxable: true, price: 20, tax: 1.5, total: 21.5 },
+		{ quantity: 2, description: 'Pants', taxable: true, price: 20000000.01, tax: 1.5, total: 21.5 },
 		{ quantity: 1, description: 'Sock', taxable: true, price: 3.99, tax: .30, total: 4.29 },
 		{ quantity: 1, description: 'Chocolate bar', taxable: false, price: 1.29, tax: null, total: 1.29 },
 	]
 </script>
 
 <ListInput {columns} {items} />
+
+<style>
+	:global(.list-input) {
+		width: 100%;
+		min-width: 600px;
+	}
+</style>

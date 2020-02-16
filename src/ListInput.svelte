@@ -1,14 +1,14 @@
 <script>
 	export let columns = []
 	export let items = []
-	
+
 	const defaultFormatter = value => value.toString()
 	const getColumnFormatter = column => column.formatter || defaultFormatter
 	const format = (column, item) => getColumnFormatter(column)(item[column.property])
-	
+
 </script>
 
-<table>
+<table class=list-input>
 	<thead>
 		<tr>
 			{#each columns as column}
