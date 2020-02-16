@@ -24,11 +24,24 @@
 				{#each columns as column}
 					<td data-type={column.type}>
 						{#if column.type === 'boolean'}
-							<input type=checkbox checked={item[column.property]} />
+							<div class="checkbox-wrapper">
+								<input type=checkbox checked={item[column.property]} />
+							</div>
 						{:else if column.type === 'number'}
-							<input type=number value={format(column, item)} step={column.step} disabled={column.writeable === false} />
+							<input
+								class=textish-input
+								type=number
+								value={format(column, item)}
+								step={column.step}
+								disabled={column.writeable === false}
+							/>
 						{:else}
-							<input type=text value={format(column, item)} disabled={column.writeable === false} />
+							<input
+								class=textish-input
+								type=text
+								value={format(column, item)}
+								disabled={column.writeable === false}
+							/>
 						{/if}
 					</td>
 				{/each}
@@ -42,57 +55,57 @@
 		border-collapse: collapse;
 		border-spacing: 0;
 	}
-	
+
 	td {
 		padding: 0;
+		border: 1px solid silver;
 	}
-	
+
 	td[data-type=boolean] {
 		text-align: center;
+		vertical-align: center;
 	}
-	
-	input {
+
+	.checkbox-wrapper {
+		width: 100%;
+		height: 100%;
+	}
+
+	input[type=checkbox] {
+		transform: scale(1.5);
+	}
+
+	.textish-input {
 		margin: 0;
 		border: none;
 		border-radius: 0;
+		width: 100%;
 	}
-	
-	input:disabled {
+
+	.textish-input:disabled {
 		color: gray;
 		background-color: transparent;
 	}
-	
+
 	th, tr {
 		text-align: left;
 	}
-	
+
 	th {
 		padding: 0 4px;
 	}
-	
-	td {
-		border: 1px solid silver;
-	}
-	
+
 	input:focus {
 		background-color: floralwhite;
 	}
-		
+
 	th[data-type=number], td[data-type=number] {
 		text-align: right;
 	}
-	
+
 	input[type=number] {
 		text-align: right;
-	}
-	
-	input[type='number'] {
-    -moz-appearance: textfield;
-	}
-	
-	input[type=checkbox] {	
-		width: 100%;
-		height: 100%;
+    	-moz-appearance: textfield;
 	}
 
 	input::-webkit-outer-spin-button,
