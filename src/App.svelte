@@ -1,16 +1,33 @@
 <script>
 	import ListInput from './ListInput.svelte'
 
+	import Checkbox from './inputs/Checkbox.svelte'
+	import Number from './inputs/Number.svelte'
+	import Text from './inputs/Text.svelte'
+
+	let taxRate = 0.075
+
 	const numberFormatter = precision => number => number === null ? '' : number.toFixed(precision)
 
-
 	const columns = [
-		{ name: 'Taxable', property: 'taxable', type: 'boolean' },
-		{ name: 'Description', property: 'description', type: 'string' },
-		{ name: 'Quantity', property: 'quantity', type: 'number', step: '.1', formatter: numberFormatter(1) },
-		{ name: 'Price', property: 'price', type: 'number', step: '.01', formatter: numberFormatter(2) },
-		{ name: 'Tax', property: 'tax', type: 'number', step: '.01', formatter: numberFormatter(2), writeable: false },
-		{ name: 'Total', property: 'total', type: 'number', step: '.01', formatter: numberFormatter(2), writeable: false },
+		{ name: 'Taxable', property: 'taxable', component: Checkbox },
+		{ name: 'Description', property: 'description', component: Text },
+		{ name: 'Quantity', property: 'quantity', component: Number, formatter: numberFormatter(1) },
+		{ name: 'Price', property: 'price', component: Number, formatter: numberFormatter(2) },
+		{
+			name: 'Tax',
+			property: 'tax',
+			component: Number,
+			formatter: numberFormatter(2),
+			computed: ({price}) => price * taxRate
+		},
+		{
+			name: 'Total',
+			property: 'total',
+			component: Number,
+			formatter: numberFormatter(2),
+			computed: ({quantity,price,tax, taxable}) => (quantity * price) + (taxable ? tax : 0)
+		},
 	]
 
 	const items = [
@@ -19,6 +36,10 @@
 		{ quantity: 1, description: 'Chocolate bar', taxable: false, price: 1.29, tax: null, total: 1.29 },
 	]
 </script>
+
+<input type="number" step="0.01" bind:value={taxRate}>
+
+<hr>
 
 <ListInput {columns} {items} />
 
