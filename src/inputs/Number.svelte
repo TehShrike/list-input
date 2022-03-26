@@ -1,5 +1,5 @@
 <script>
-	import Text from './Text.svelte'
+	import InputStyle from './InputStyle.svelte'
 
 	const defaultFormatter = _ => _
 
@@ -12,15 +12,17 @@
 	}
 </script>
 
-<input
-	class=textish-input
-	value={(formatter || defaultFormatter)(value)}
-	disabled={disabled}
-	on:change={onChange}
-/>
+<InputStyle>
+	<input
+		class=input-style
+		value={(formatter || defaultFormatter)(value)}
+		disabled={disabled}
+		on:change={onChange}
+	/>
+</InputStyle>
 
 <style>
-	span > :global(input) {
+	:global(input) {
 		text-align: right;
 	}
 </style>

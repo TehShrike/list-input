@@ -63,17 +63,4 @@
 		display: none;
 		-webkit-appearance: none;
 	}
-
-	th :global(.textish-input) {
-		margin: 0;
-		border: none;
-		border-radius: 0;
-		width: 100%;
-	}
-
-	th :global(.textish-input:disabled) {
-		color: gray;
-		background-color: transparent;
-	}
-
 </style>
