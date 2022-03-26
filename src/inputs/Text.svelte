@@ -1,14 +1,14 @@
 <script>
-	const defaultFormatter = _ => _
+	import InputStyle from './InputStyle.svelte'
 
-	export let value = ''
+	export let value = ``
 	export let disabled = false
-	export let formatter = defaultFormatter
 </script>
 
-<input
-	class=textish-input
-	type=text
-	value={(formatter || defaultFormatter)(value)}
-	disabled={disabled}
-/>
+<InputStyle>
+	<input
+		type=text
+		bind:value
+		disabled={disabled}
+	/>
+</InputStyle>
