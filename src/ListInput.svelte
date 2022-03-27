@@ -1,66 +1,73 @@
 <script>
-	export let columns = []
-	export let items = []
+	export let columns
+	export let rows
 
-	const defaultFormatter = value => value.toString()
-	const getColumnFormatter = column => column.formatter || defaultFormatter
-	const format = (column, item) => getColumnFormatter(column)(item[column.property])
-
+	$: grid_template_columns = columns.map(
+		({ initial_fraction }) => `${initial_fraction}fr`,
+	).join(` `)
 </script>
 
-<table class=list-input>
-	<thead>
-		<tr>
+<div class="grid-daddy">
+	<div class="grid-header" style="grid-template-columns: {grid_template_columns};">
+		{#each columns as column}
+			<div class="grid-column-header" data-header-text-align={column.header_text_align}>
+				{column.name}
+			</div>
+		{/each}			
+	</div>
+
+	{#each rows as row}
+		<div class="grid-row" style="grid-template-columns: {grid_template_columns};">
 			{#each columns as column}
-				<th>
-					{column.name}
-				</th>
-			{/each}
-		</tr>
-	</thead>
-	<tbody>
-		{#each items as item}
-			<tr>
-				{#each columns as column}
-					<td>
+				<div class="grid-dolumn">
+					{#if column.calculated_value}
 						<svelte:component
 							this={column.component}
-							value={item[column.property]}
-							formatter={column.formatter}
+							value={column.calculated_value(row)}
 						/>
-					</td>
-				{/each}
-			</tr>
-		{/each}
-	</tbody>
-</table>
+					{:else}
+						<svelte:component
+							this={column.component}
+							bind:value={row[column.property]}
+							{...column.props}
+						/>
+					{/if}
+				</div>
+			{/each}
+		</div>
+	{/each}
+</div>
 
 <style>
-	table {
-		border-collapse: collapse;
-		border-spacing: 0;
+	.grid-daddy {
+		display: grid;
 	}
 
-	td {
-		padding: 0;
-		border: 1px solid silver;
+	.grid-header {
+		display: grid;
 	}
 
-	th, tr {
-		text-align: left;
+	.grid-row {
+		display: grid;
 	}
 
-	th {
-		padding: 0 4px;
+	.grid-column-header {
+		padding: 2px 4px;
 	}
 
-	th :global(input:focus) {
-		background-color: floralwhite;
+	.grid-dolumn, .grid-column-header {
+		box-sizing: border-box;
+		border: .5px solid black;
 	}
 
-	th :global(input::-webkit-outer-spin-button),
-	th :global(input::-webkit-inner-spin-button) {
-		display: none;
-		-webkit-appearance: none;
+	.grid-column-header {
+		display: grid;
+	}
+
+	[data-header-text-align=center] {
+		text-align: center;
+	}
+	[data-header-text-align=right] {
+		text-align: right;
 	}
 </style>

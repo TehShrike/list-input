@@ -5,7 +5,7 @@
     "build": "rollup -c",
     "dev": "npm-run-all build --parallel watch start",
     "watch": "rollup -c -w",
-    "start": "live-server public"
+    "start": "live-server --no-css-inject public"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.2",
@@ -16,5 +16,8 @@
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-svelte": "^7.1.0",
     "svelte": "^3.46.4"
+  },
+  "dependencies": {
+    "financial-number": "^3.1.0"
   }
 }

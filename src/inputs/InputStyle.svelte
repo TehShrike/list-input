@@ -1,17 +1,25 @@
-<span>
+<div>
 	<slot></slot>
-</span>
+</div>
 
 <style>
-	span :global(.input-style) {
+	div :global(.input-style), div :global(input) {
+		box-sizing: border-box;
 		margin: 0;
+		padding: 4px 8px;
 		border: none;
 		border-radius: 0;
 		width: 100%;
+		font-size: 16px;
 	}
 
-	span :global(.input-style:disabled) {
+	div :global(.input-style:disabled), div :global(input:disabled) {
 		color: gray;
 		background-color: transparent;
+	}
+
+
+	div :global(.input-style:focus), div :global(input:focus) {
+		background-color: floralwhite;
 	}
 </style>

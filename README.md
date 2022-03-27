@@ -14,6 +14,7 @@ This is just a hobby project written in anger, it's not a real thing yet.
 - jank
 	- field background color when checkboxes have focus
 	- zeros after the decimal point on number inputs in Firefox
+- needs good focus indication
 - custom keyboard interactions
 	- enter should take you to either the column below, or to the first column of the next row
 	- shift+enter should take you to the column above
@@ -22,9 +23,6 @@ This is just a hobby project written in anger, it's not a real thing yet.
 - resizable columns
 	- emitting an event on resize so that you can store them in user preferences
 
-## Think about
+## todo
 
-- ability to put arbitrary content into fields (buttons, autocomplete controls)
-- should probably just use text inputs instead of number inputs
-	- at least when focus isn't in the element
-		- is that possible/a good idea?
+- consistent table borders internal and external

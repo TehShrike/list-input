@@ -1,67 +1,120 @@
 <script>
-	import ListInput from './ListInput.svelte'
-
-	import Checkbox from './inputs/Checkbox.svelte'
 	import Number from './inputs/Number.svelte'
+	import Checkbox from './inputs/Checkbox.svelte'
+	import NumberDisplay from './inputs/NumberDisplay.svelte'
 	import Text from './inputs/Text.svelte'
 
-	let taxRate = 0.075
+	import HardWayTable from './HardWayTable.svelte'
+	import ListInput from './ListInput.svelte'
 
-	const numberFormatter = precision => number => number === null ? `` : number.toFixed(precision)
+	import number from 'financial-number'
 
-	/*
-		Need to be able to define attributes along with the component.  Need to pass
-		min, max, increment, etc to the Number component.
+	let tax_rate = number(`0.075`)
 
-		I think this obviates the formatter for the Number component?  maybe not.
+/*
+	Is it practical to have a warg element for every item?
+	Can `computed` be implemented across all rows?
+*/
+	const zero = number(`0`)
 
-		Need a display component that can take attributes to know whether or not
-		to right-align/numeric-column and whatnot.  Slightly lightened text.
-
-		What should I be passing to Quantity?  min, max, increment/precision.]]
-
-		Tax/Total absolutely need to be display components and not inputs.  wtf.
-
-		Then just make the components look as good as the other version.
-	*/
-
-	const columns = [
-		{ name: `Taxable`, property: `taxable`, component: Checkbox },
-		{ name: `Description`, property: `description`, component: Text },
-		{ name: `Quantity`, property: `quantity`, component: Number, formatter: numberFormatter(1) },
-		{ name: `Price`, property: `price`, component: Number, formatter: numberFormatter(2) },
-		{
-			name: `Tax`,
-			property: `tax`,
-			component: Number,
-			formatter: numberFormatter(2),
-			computed: ({ price }) => price * taxRate,
+	const columns = [{
+		name: `Taxable`,
+		property: `taxable`,
+		component: Checkbox,
+		initial_fraction: 1,
+	}, {
+		name: `Description`,
+		property: `description`,
+		component: Text,
+		initial_fraction: 6,
+	}, {
+		name: `Quantity`,
+		property: `quantity`,
+		component: Number,
+		initial_fraction: 2,
+		header_text_align: `right`,
+		props: {
+			min: null,
+			precision: 0,
 		},
-		{
-			name: `Total`,
-			property: `total`,
-			component: Number,
-			formatter: numberFormatter(2),
-			computed: ({ quantity, price, tax, taxable }) => (quantity * price) + (taxable ? tax : 0),
+	}, {
+		name: `Price`,
+		property: `price`,
+		component: Number,
+		initial_fraction: 3,
+		header_text_align: `right`,
+		props: {
+			min: null,
+			precision: 2,
 		},
-	]
+	}, {
+		name: `Tax`,
+		property: `tax`,
+		component: NumberDisplay,
+		initial_fraction: 2,
+		header_text_align: `right`,
+		calculated_value: ({ taxable, quantity, price }) => (taxable
+			? quantity.times(price).times(tax_rate)
+			: zero
+		).changePrecision(2),
+	}, {
+		name: `Total`,
+		property: `total`,
+		component: NumberDisplay,
+		initial_fraction: 3,
+		header_text_align: `right`,
+		calculated_value: ({ taxable, quantity, price }) => quantity.times(price).plus(
+			(taxable ? quantity.times(price).times(tax_rate) : zero).changePrecision(2),
+		).changePrecision(2),
+	}]
 
-	const items = [
-		{ quantity: 2, description: `Pants`, taxable: true, price: 20000000.01, tax: 1.5, total: 21.5 },
-		{ quantity: 1, description: `Sock`, taxable: true, price: 3.99, tax: .30, total: 4.29 },
-		{ quantity: 1, description: `Chocolate bar`, taxable: false, price: 1.29, tax: null, total: 1.29 },
-	]
+	const items = [{
+		quantity: number(`2`),
+		description: `Pants`,
+		taxable: true,
+		price: number(`20000.01`),
+	}, {
+		quantity: number(`1`),
+		description: `Sock`,
+		taxable: true,
+		price: number(`3.99`),
+	}, {
+		quantity: number(`1`),
+		description: `Chocolate bar`,
+		taxable: false,
+		price: number(`1.29`),
+	}]
 </script>
 
-<input type="number" step="0.01" bind:value={taxRate}>
+<label>
+	Tax rate
+	<Number
+		bind:value={tax_rate}
+		precision={3}
+		min={0}
+		style="max-width: 200px; border: 1px solid black"
+	/>	
+</label>
 
 <hr>
 
-<ListInput {columns} {items} />
+<HardWayTable
+	{items}
+	{tax_rate}
+/>
+
+<hr>
+
+<ListInput 
+	{columns}
+	rows={items}
+/>
+
+<hr>
 
 <style>
-	:global(.list-input) {
-		width: 100%;
-		min-width: 600px;
+	hr {
+		margin: 32px 0;
+		color: lightgray;
 	}
 </style>

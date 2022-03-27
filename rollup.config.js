@@ -21,7 +21,7 @@ export default {
 			},
 		}),
 		css({
-			output: `public/build/bundle.css`,
+			output: `bundle.css`,
 		}),
 		resolve({
 			browser: true,

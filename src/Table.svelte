@@ -6,6 +6,8 @@
 	table {
 		border-collapse: collapse;
 		border-spacing: 0;
+		width: 100%;
+		min-width: 600px;
 	}
 
 	table :global(td) {
