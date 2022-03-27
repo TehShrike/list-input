@@ -68,7 +68,7 @@
 		).changePrecision(2),
 	}]
 
-	const items = [{
+	let items = [{
 		quantity: number(`2`),
 		description: `Pants`,
 		taxable: true,
@@ -99,7 +99,7 @@
 <hr>
 
 <HardWayTable
-	{items}
+	bind:items
 	{tax_rate}
 />
 
@@ -107,7 +107,7 @@
 
 <ListInput 
 	{columns}
-	rows={items}
+	bind:rows={items}
 />
 
 <hr>
