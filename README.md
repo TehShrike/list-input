@@ -8,7 +8,6 @@ This is just a hobby project written in anger, it's not a real thing yet.
 
 ## In progress
 
-- proper cell background color when checkboxes have focus
 - inputs need good focus indication
 - custom keyboard interactions
 	- enter should take you to either the column below, or to the first column of the next row

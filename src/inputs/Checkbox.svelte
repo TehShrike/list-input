@@ -16,6 +16,10 @@
 		text-align: center;
 	}
 
+	.checkbox-wrapper:focus-within {
+		background-color: floralwhite;
+	}
+
 	input {
 		transform: scale(1.5);
 		margin: 0;
