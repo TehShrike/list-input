@@ -8,11 +8,10 @@ This is just a hobby project written in anger, it's not a real thing yet.
 
 ## In progress
 
+- Increase the horizontal padding of table header columns without messing up all the borders
 - custom keyboard interactions
 	- enter should take you to either the column below, or to the first column of the next row
 	- shift+enter should take you to the column above
-- consistent table borders internal and external
-	- do I really have to add an extra half-pixel border to the top/bottom/left-most/right-most cell borders?
 
 ### Other future features
 

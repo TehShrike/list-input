@@ -8,7 +8,7 @@
 </script>
 
 <div class="grid-daddy">
-	<div class="grid-header" style="grid-template-columns: {grid_template_columns};">
+	<div class="grid-row" style="grid-template-columns: {grid_template_columns};">
 		{#each columns as column}
 			<div class="grid-column-header" data-header-text-align={column.header_text_align}>
 				{column.name}
@@ -41,23 +41,23 @@
 <style>
 	.grid-daddy {
 		display: grid;
-	}
-
-	.grid-header {
-		display: grid;
+		gap: 1px;
 	}
 
 	.grid-row {
 		display: grid;
+		gap: 1px;
 	}
 
 	.grid-column-header {
-		padding: 2px 4px;
+		padding: 8px 4px;
+		font-weight: 500;
 	}
 
 	.grid-dolumn, .grid-column-header {
 		box-sizing: border-box;
-		border: .5px solid black;
+/*		border: .5px solid black;*/
+		outline: 1px solid black;
 	}
 
 	.grid-column-header {
