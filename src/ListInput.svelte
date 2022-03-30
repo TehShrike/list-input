@@ -7,19 +7,19 @@
 	).join(` `)
 </script>
 
-<div class="grid-daddy">
-	<div class="grid-row" style="grid-template-columns: {grid_template_columns};">
+<div role=table>
+	<div style="grid-template-columns: {grid_template_columns};" role=row>
 		{#each columns as column}
-			<div class="grid-column-header" data-header-text-align={column.header_text_align}>
+			<div data-header-text-align={column.header_text_align} role=columnheader>
 				{column.name}
 			</div>
 		{/each}			
 	</div>
 
 	{#each rows as row}
-		<div class="grid-row" style="grid-template-columns: {grid_template_columns};">
+		<div style="grid-template-columns: {grid_template_columns};" role=row>
 			{#each columns as column}
-				<div class="grid-dolumn">
+				<div role=cell>
 					{#if column.calculated_value}
 						<svelte:component
 							this={column.component}
@@ -39,29 +39,28 @@
 </div>
 
 <style>
-	.grid-daddy {
+	[role=table] {
 		display: grid;
 		gap: 1px;
 	}
 
-	.grid-row {
+	[role=row] {
 		display: grid;
 		gap: 1px;
 	}
 
-	.grid-column-header {
-		padding: 8px 4px;
+	[role=columnheader] {
+		display: grid;
 		font-weight: 500;
+
+		padding: 8px;
 	}
 
-	.grid-dolumn, .grid-column-header {
+	[role=cell], [role=columnheader] {
 		box-sizing: border-box;
-/*		border: .5px solid black;*/
-		outline: 1px solid black;
-	}
+		outline: 1px solid #888787;
 
-	.grid-column-header {
-		display: grid;
+		overflow: hidden;
 	}
 
 	[data-header-text-align=center] {
