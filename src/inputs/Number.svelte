@@ -38,7 +38,7 @@
 	$: input_value = get_js_number_of_current_value()
 
 	const validate_input_value = () => {
-		if (!value.equal(input_value.toString())) {
+		if (input_value === null || !value.equal(input_value.toString())) {
 			input_value = get_js_number_of_current_value()
 		}
 
