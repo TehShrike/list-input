@@ -6,6 +6,10 @@ Because every other spreadsheet-like form on the web sucks.
 
 This is just a hobby project written in anger, it's not a real thing yet.
 
+## Closest competition
+
+Not really, since it's a general spreadsheet and I'm aiming for something specialized, and it's way larger and does more, but [canvas-datagrid](https://github.com/TonyGermaneri/canvas-datagrid) ([demo](https://canvas-datagrid.js.org/demo.html)) is pretty sweet
+
 ## In progress
 
 - custom keyboard interactions
