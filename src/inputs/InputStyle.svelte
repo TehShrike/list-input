@@ -21,13 +21,5 @@
 
 	div :global(.input-style:focus), div :global(input:focus) {
 		background-color: floralwhite;
-
-		-webkit-appearance: none;
-		-webkit-box-shadow: 0 0 0 2px #6a6862;
-		box-shadow: 0 0 0 2px #6a6862;
-		outline: none;
-
-		position: relative;
-		border-radius: 2px;
 	}
 </style>

@@ -63,6 +63,13 @@
 		overflow: hidden;
 	}
 
+	[role=cell]:focus-within {
+		border-radius: 2px;
+		-webkit-box-shadow: 0 0 0 2px #6a6862;
+		box-shadow: 0 0 0 2px #6a6862;
+		z-index: 1;
+	}
+
 	[data-header-text-align=center] {
 		text-align: center;
 	}
