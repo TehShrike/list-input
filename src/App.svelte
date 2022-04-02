@@ -4,7 +4,6 @@
 	import NumberDisplay from './inputs/NumberDisplay.svelte'
 	import Text from './inputs/Text.svelte'
 
-	import HardWayTable from './HardWayTable.svelte'
 	import ListInput from './ListInput.svelte'
 
 	import number from 'financial-number'
@@ -98,19 +97,10 @@
 
 <hr>
 
-<HardWayTable
-	bind:items
-	{tax_rate}
-/>
-
-<hr>
-
 <ListInput 
 	{columns}
 	bind:rows={items}
 />
-
-<hr>
 
 <style>
 	hr {
