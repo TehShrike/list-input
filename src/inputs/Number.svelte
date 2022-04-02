@@ -66,7 +66,12 @@
 	input {
 		text-align: right;
 		font-variant-numeric: tabular-nums;
+		-webkit-appearance: textfield;
 		-moz-appearance: textfield;
+		appearance: textfield;
+	}
+	input:focus {
+		-moz-appearance: textfield !important;
 	}
 
 	input::-webkit-outer-spin-button,
