@@ -5,7 +5,7 @@
     "build": "rollup -c",
     "dev": "npm-run-all build --parallel watch start",
     "watch": "rollup -c -w",
-    "start": "live-server --no-css-inject public"
+    "start": "live-server --no-css-inject --no-browser public"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.2",
