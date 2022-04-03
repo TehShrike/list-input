@@ -1,14 +1,15 @@
 <script>
 	import InputStyle from './InputStyle.svelte'
 
-	export let value = ``
 	export let disabled = false
+
+	export let store
 </script>
 
 <InputStyle>
 	<input
 		type=text
-		bind:value
+		bind:value={$store}
 		disabled={disabled}
 	/>
 </InputStyle>

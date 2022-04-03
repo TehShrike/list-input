@@ -5,15 +5,16 @@
 
 	export let min = 0
 	export let max = null
-	export let value
 	export let disabled = false
 	export let precision = 2
+
+	export let store
 
 	let input_element
 
 	$: step = (10 ** -precision).toString()
 
-	const get_js_number_of_current_value = () => parseFloat(number(value))
+	const get_js_number_of_current_value = () => parseFloat(number($store))
 	let input_value = get_js_number_of_current_value()
 
 	$: min !== null && typeof min !== `number` && console.error(`min should be of type number instead of "${typeof min}" ("${min}")`)
@@ -29,7 +30,7 @@
 			&& does_not_exceed_max
 			&& number(input_value).mod(step).equal(`0`)
 		) {
-			value = number(input_value).changePrecision(precision)
+			$store = number(input_value).changePrecision(precision)
 		}
 	}
 
@@ -38,12 +39,12 @@
 	$: input_value = get_js_number_of_current_value()
 
 	const validate_input_value = () => {
-		if (input_value === null || !value.equal(input_value.toString())) {
+		if (input_value === null || !$store.equal(input_value.toString())) {
 			input_value = get_js_number_of_current_value()
 		}
 
-		if (value.getPrecision() !== number(input_value.toString()).getPrecision()) {
-			input_element.value = value.toString()
+		if ($store.getPrecision() !== number(input_value.toString()).getPrecision()) {
+			input_element.value = $store.toString()
 		}
 	}
 </script>

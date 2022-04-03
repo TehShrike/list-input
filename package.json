@@ -18,6 +18,7 @@
     "svelte": "^3.46.4"
   },
   "dependencies": {
-    "financial-number": "^3.1.0"
+    "financial-number": "^3.1.0",
+    "warg": "^2.1.0"
   }
 }

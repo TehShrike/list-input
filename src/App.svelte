@@ -7,14 +7,13 @@
 	import ListInput from './ListInput.svelte'
 
 	import number from 'financial-number'
+	import { computed, value } from 'warg'
 
-	let tax_rate = number(`0.075`)
-
-/*
-	Is it practical to have a warg element for every item?
-	Can `computed` be implemented across all rows?
-*/
 	const zero = number(`0`)
+
+	const other_stores = {
+		tax_rate: value(number(`0.075`)),
+	}
 
 	const columns = [{
 		name: `Taxable`,
@@ -52,7 +51,7 @@
 		component: NumberDisplay,
 		initial_fraction: 2,
 		header_text_align: `right`,
-		calculated_value: ({ taxable, quantity, price }) => (taxable
+		computed: ({ taxable, quantity, price, tax_rate }) => (taxable
 			? quantity.times(price).times(tax_rate)
 			: zero
 		).changePrecision(2),
@@ -62,7 +61,7 @@
 		component: NumberDisplay,
 		initial_fraction: 3,
 		header_text_align: `right`,
-		calculated_value: ({ taxable, quantity, price }) => quantity.times(price).plus(
+		computed: ({ taxable, quantity, price, tax_rate }) => quantity.times(price).plus(
 			(taxable ? quantity.times(price).times(tax_rate) : zero).changePrecision(2),
 		).changePrecision(2),
 	}]
@@ -88,7 +87,7 @@
 <label>
 	Tax rate
 	<Number
-		bind:value={tax_rate}
+		bind:store={other_stores.tax_rate}
 		precision={3}
 		min={0}
 		style="max-width: 200px; border: 1px solid black"
@@ -100,6 +99,7 @@
 <ListInput 
 	{columns}
 	bind:rows={items}
+	{other_stores}
 />
 
 <style>

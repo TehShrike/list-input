@@ -1,10 +1,45 @@
 <script>
+	import { computed as warg_computed, value as warg_value } from 'warg'
+
 	export let columns
 	export let rows
+	export let other_stores
 
 	$: grid_template_columns = columns.map(
 		({ initial_fraction }) => `${initial_fraction}fr`,
 	).join(` `)
+
+	const row_with_stores = rows.map((row, row_index) => {
+		const value_stores = Object.fromEntries(
+			columns
+				.filter(({ computed }) => !computed)
+				.map(({ property }) => {
+					if (!(property in row)) {
+						throw new Error(`row ${row_index} was missing property "${property}"`)
+					}
+	
+					return [
+						property,
+						warg_value(row[property]),
+					]
+				}),
+		)
+
+		const stores = {
+			...value_stores,
+			...other_stores,
+		}
+
+		columns.filter(({ computed }) => computed)
+			.forEach(({ property, computed }) => {
+				stores[property] = warg_computed(stores, computed)
+			})
+
+		return {
+			original_row: row,
+			stores,
+		}
+	})
 </script>
 
 <div role=table>
@@ -16,22 +51,15 @@
 		{/each}			
 	</div>
 
-	{#each rows as row}
+	{#each row_with_stores as {stores}}
 		<div style="grid-template-columns: {grid_template_columns};" role=row>
 			{#each columns as column}
 				<div role=cell>
-					{#if column.calculated_value}
-						<svelte:component
-							this={column.component}
-							value={column.calculated_value(row)}
-						/>
-					{:else}
-						<svelte:component
-							this={column.component}
-							bind:value={row[column.property]}
-							{...column.props}
-						/>
-					{/if}
+					<svelte:component
+						this={column.component}
+						store={stores[column.property]}
+						{...column.props}
+					/>
 				</div>
 			{/each}
 		</div>

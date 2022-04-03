@@ -1,13 +1,13 @@
 <script>
 	import InputStyle from './InputStyle.svelte'
 
-	export let value
+	export let store
 </script>
 
 <InputStyle>
 	<div class="input-style">
-		{#if value !== null}
-			{value.toString()}
+		{#if $store !== null}
+			{$store.toString()}
 		{/if}
 	</div>
 </InputStyle>

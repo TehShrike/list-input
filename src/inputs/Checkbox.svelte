@@ -1,10 +1,10 @@
 <script>
-	export let value = false
+	export let store
 
 	let input_element = null
 
 	const on_cell_click = () => {
-		value = !value
+		$store = !$store
 		input_element.focus()
 	}
 </script>
@@ -12,7 +12,7 @@
 <div class="checkbox-wrapper" on:click={on_cell_click}>
 	<input 
 		type=checkbox 
-		bind:checked={value} 
+		bind:checked={$store} 
 		bind:this={input_element}
 	/>
 </div>
