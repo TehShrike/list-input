@@ -61,9 +61,7 @@
 		component: NumberDisplay,
 		initial_fraction: 3,
 		header_text_align: `right`,
-		computed: ({ taxable, quantity, price, tax_rate }) => quantity.times(price).plus(
-			(taxable ? quantity.times(price).times(tax_rate) : zero).changePrecision(2),
-		).changePrecision(2),
+		computed: ({ quantity, price, tax }) => quantity.times(price).plus(tax).changePrecision(2),
 	}]
 
 	let items = [{
