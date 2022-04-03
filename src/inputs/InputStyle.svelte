@@ -21,5 +21,6 @@
 
 	div :global(.input-style:focus), div :global(input:focus) {
 		background-color: floralwhite;
+		outline: none;
 	}
 </style>
