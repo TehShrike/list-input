@@ -40,6 +40,18 @@
 			stores,
 		}
 	})
+
+	const focus_functions = {}
+
+	const on_keypress = (event, row_index, column_index) => {
+		if (event.key === `Enter`) {
+			const target_row_index = row_index + (event.shiftKey ? -1 : 1)
+			const target_focus_function = focus_functions[`${target_row_index}-${column_index}`]
+			if (target_focus_function) {
+				target_focus_function()
+			}
+		}
+	}
 </script>
 
 <div role=table>
@@ -51,13 +63,14 @@
 		{/each}			
 	</div>
 
-	{#each row_with_stores as {stores}}
+	{#each row_with_stores as {stores}, row_index}
 		<div style="grid-template-columns: {grid_template_columns};" role=row>
-			{#each columns as column}
-				<div role=cell>
+			{#each columns as column, column_index}
+				<div role=cell on:keypress={event => on_keypress(event, row_index, column_index)}>
 					<svelte:component
 						this={column.component}
 						store={stores[column.property]}
+						bind:focus={focus_functions[`${row_index}-${column_index}`]}
 						{...column.props}
 					/>
 				</div>

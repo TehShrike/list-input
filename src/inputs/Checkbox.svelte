@@ -1,11 +1,13 @@
 <script>
 	export let store
 
-	let input_element = null
+	let input_element
+
+	export const focus = () => input_element.focus()
 
 	const on_cell_click = () => {
 		$store = !$store
-		input_element.focus()
+		focus()
 	}
 </script>
 

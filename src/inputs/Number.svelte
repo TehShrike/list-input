@@ -12,6 +12,8 @@
 
 	let input_element
 
+	export const focus = () => input_element.focus()
+
 	$: step = (10 ** -precision).toString()
 
 	const get_js_number_of_current_value = () => parseFloat(number($store))

@@ -4,6 +4,10 @@
 	export let disabled = false
 
 	export let store
+
+	let input_element
+
+	export const focus = () => input_element.focus()
 </script>
 
 <InputStyle>
@@ -11,5 +15,6 @@
 		type=text
 		bind:value={$store}
 		disabled={disabled}
+		bind:this={input_element}
 	/>
 </InputStyle>
