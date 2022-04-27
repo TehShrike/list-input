@@ -3,13 +3,15 @@
 
 	export let columns
 	export let rows
-	export let other_stores
+	export let external_stores
+	export let empty_row_factory
+	export let row_is_empty_predicate
 
 	$: grid_template_columns = columns.map(
 		({ initial_fraction }) => `${initial_fraction}fr`,
 	).join(` `)
 
-	const row_with_stores = rows.map((row, row_index) => {
+	const row_to_stores = (row, row_index) => {
 		const value_stores = Object.fromEntries(
 			columns
 				.filter(({ computed }) => !computed)
@@ -25,21 +27,44 @@
 				}),
 		)
 
-		const stores = {
+		const object_of_stores = {
 			...value_stores,
-			...other_stores,
+			...external_stores,
 		}
 
 		columns.filter(({ computed }) => computed)
 			.forEach(({ property, computed }) => {
-				stores[property] = warg_computed(stores, computed)
+				object_of_stores[property] = warg_computed(object_of_stores, computed)
 			})
 
+		const store_of_values = warg_computed(object_of_stores, all_values => all_values)
+
 		return {
-			original_row: row,
-			stores,
+			object_of_stores,
+			store_of_values,
 		}
-	})
+	}
+
+	let row_stores = rows.map((row, row_index) => row_to_stores(row, row_index))
+
+	$: row_contents_store = warg_computed(
+		// this could theoretically come out in a different order than the original array?  meh
+		Object.fromEntries(row_stores.map(
+			({ store_of_values }, index) => [ index, store_of_values ],
+		)),
+		rows_object => Object.values(rows_object),
+	)
+
+	const update_bound_value = () => {
+		rows = row_stores.map(({ store_of_values }) => store_of_values.get())
+	}
+
+	$: $row_contents_store && update_bound_value()
+	$: row_stores && update_bound_value()
+
+	// a store that changes whenever any rows change.
+	// another store that changes whenever the array changes.
+	// the array of stores is the canonical array?
 
 	const focus_functions = {}
 
@@ -52,6 +77,8 @@
 			}
 		}
 	}
+
+	
 </script>
 
 <div role=table>
@@ -63,13 +90,13 @@
 		{/each}			
 	</div>
 
-	{#each row_with_stores as {stores}, row_index}
+	{#each row_stores as {object_of_stores}, row_index}
 		<div style="grid-template-columns: {grid_template_columns};" role=row>
 			{#each columns as column, column_index}
 				<div role=cell on:keypress={event => on_keypress(event, row_index, column_index)}>
 					<svelte:component
 						this={column.component}
-						store={stores[column.property]}
+						store={object_of_stores[column.property]}
 						bind:focus={focus_functions[`${row_index}-${column_index}`]}
 						{...column.props}
 					/>

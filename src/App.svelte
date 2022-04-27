@@ -7,11 +7,11 @@
 	import ListInput from './ListInput.svelte'
 
 	import number from 'financial-number'
-	import { computed, value } from 'warg'
+	import { value } from 'warg'
 
 	const zero = number(`0`)
 
-	const other_stores = {
+	const external_stores = {
 		tax_rate: value(number(`0.075`)),
 	}
 
@@ -59,10 +59,22 @@
 		name: `Total`,
 		property: `total`,
 		component: NumberDisplay,
-		initial_fraction: 3,
+		initial_fraction: 2.5,
 		header_text_align: `right`,
 		computed: ({ quantity, price, tax }) => quantity.times(price).plus(tax).changePrecision(2),
 	}]
+
+	const empty_row_factory = () => ({
+		quantity: number(`1`),
+		description: ``,
+		taxable: true,
+		price: number(`0.00`),
+	})
+
+	const row_is_empty_predicate = row => row.quantity.equal(`1`)
+		&& row.description === ``
+		&& row.taxable === true
+		&& row.price.equal(`0.00`)
 
 	let items = [{
 		quantity: number(`2`),
@@ -80,29 +92,43 @@
 		taxable: false,
 		price: number(`1.29`),
 	}]
+
+	$: total_calculated_from_rows = items.reduce(
+		(invoice_total, { total }) => invoice_total.plus(total ? total : zero), zero,
+	)
 </script>
 
-<label>
-	Tax rate
-	<Number
-		bind:store={other_stores.tax_rate}
-		precision={3}
-		min={0}
-		style="max-width: 200px; border: 1px solid black"
-	/>	
-</label>
+<div class="container">
+	<label>
+		Tax rate
+		<Number
+			bind:store={external_stores.tax_rate}
+			precision={3}
+			min={0}
+			style="max-width: 200px; border: 1px solid black"
+		/>	
+	</label>
 
-<hr>
+	<ListInput 
+		{columns}
+		bind:rows={items}
+		{external_stores}
+		{empty_row_factory}
+		{row_is_empty_predicate}
+	/>
 
-<ListInput 
-	{columns}
-	bind:rows={items}
-	{other_stores}
-/>
+	<div style="display: flex; justify-content: flex-end; gap: 8px;">
+		<strong>Calculated total:</strong>
+		<output>{total_calculated_from_rows.toString()}</output>		
+	</div>
+</div>
+
+
 
 <style>
-	hr {
-		margin: 32px 0;
-		color: lightgray;
+	.container {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
 	}
 </style>
