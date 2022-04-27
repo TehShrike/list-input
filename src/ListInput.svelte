@@ -11,13 +11,14 @@
 		({ initial_fraction }) => `${initial_fraction}fr`,
 	).join(` `)
 
-	const row_to_stores = (row, row_index) => {
+	let row_key = 0
+	const row_to_stores = (row, row_name) => {
 		const value_stores = Object.fromEntries(
 			columns
 				.filter(({ computed }) => !computed)
 				.map(({ property }) => {
 					if (!(property in row)) {
-						throw new Error(`row ${row_index} was missing property "${property}"`)
+						throw new Error(`row ${row_name} was missing property "${property}"`)
 					}
 	
 					return [
@@ -42,25 +43,57 @@
 		return {
 			object_of_stores,
 			store_of_values,
+			key: row_key++,
 		}
 	}
 
+	// row_stores is the canonical array that should be written to when state needs to change
 	let row_stores = rows.map((row, row_index) => row_to_stores(row, row_index))
 
-	$: row_contents_store = warg_computed(
-		// this could theoretically come out in a different order than the original array?  meh
-		Object.fromEntries(row_stores.map(
-			({ store_of_values }, index) => [ index, store_of_values ],
-		)),
-		rows_object => Object.values(rows_object),
-	)
-
-	const update_bound_value = () => {
-		rows = row_stores.map(({ store_of_values }) => store_of_values.get())
+	const make_store_that_updates_when_array_contents_change = row_stores => {
+		console.log(`make_store_that_updates_when_array_contents_change was called`, row_stores.length)
+		return warg_computed(
+			// this could theoretically come out in a different order than the original array?  meh
+			Object.fromEntries(row_stores.map(
+				({ store_of_values }, index) => [ index, store_of_values ],
+			)),
+			rows_object => Object.values(rows_object),
+		)
 	}
 
-	$: $row_contents_store && update_bound_value()
-	$: row_stores && update_bound_value()
+	$: row_contents_store = make_store_that_updates_when_array_contents_change(row_stores)
+
+	const update_bound_value = () => {
+		rows = row_stores
+			.map(({ store_of_values }) => store_of_values.get())
+			.filter(row => !row_is_empty_predicate(row))
+	}
+
+	$: $row_contents_store && row_stores && update_bound_value()
+
+	const clean_up_empty_rows_and_ensure_final_is_empty = () => {
+		console.log(`inside clean_up_empty_rows_and_ensure_final_is_empty`)
+		let cleaned_up = row_stores.filter(
+			({ store_of_values }, index) => index === row_stores.length - 1
+				|| !row_is_empty_predicate(store_of_values.get()),
+		)
+
+		let changed = cleaned_up.length !== row_stores.length
+
+		let last_row_is_empty = cleaned_up.length > 0
+			&& row_is_empty_predicate(cleaned_up[cleaned_up.length - 1].store_of_values.get())
+	
+		if (!last_row_is_empty) {
+			cleaned_up.push(row_to_stores(empty_row_factory(), `[row from empty row factory]`))
+			changed = true
+		}
+
+		if (changed) {
+			row_stores = cleaned_up
+		}
+	}
+
+	$: $row_contents_store && row_stores && clean_up_empty_rows_and_ensure_final_is_empty()
 
 	// a store that changes whenever any rows change.
 	// another store that changes whenever the array changes.
@@ -90,7 +123,7 @@
 		{/each}			
 	</div>
 
-	{#each row_stores as {object_of_stores}, row_index}
+	{#each row_stores as { object_of_stores, key }, row_index (key)}
 		<div style="grid-template-columns: {grid_template_columns};" role=row>
 			{#each columns as column, column_index}
 				<div role=cell on:keypress={event => on_keypress(event, row_index, column_index)}>

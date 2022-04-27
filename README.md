@@ -12,8 +12,11 @@ Not really, since it's a general spreadsheet and I'm aiming for something specia
 
 ### Future features
 
+- `clean_up_empty_rows_and_ensure_final_is_empty` isn't triggering when new row contents are changed
 - option to pass in an "empty row" object so that there will always be an empty row at the bottom of the list
-- dropdowns
+- dragging to reorder rows
+- enter/shift+enter should select cell contents like tab/shift+tab do
+- dropdowns?
 - resizable columns?
 	- emitting an event on resize so that you can store them in user preferences
 	- https://stackoverflow.com/questions/46044589/dynamically-resize-columns-in-css-grid-layout-with-mouse
