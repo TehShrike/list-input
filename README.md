@@ -12,8 +12,7 @@ Not really, since it's a general spreadsheet and I'm aiming for something specia
 
 ### Future features
 
-- `clean_up_empty_rows_and_ensure_final_is_empty` isn't triggering when new row contents are changed
-- option to pass in an "empty row" object so that there will always be an empty row at the bottom of the list
+- don't delete empty rows when focus is inside of them
 - dragging to reorder rows
 - enter/shift+enter should select cell contents like tab/shift+tab do
 - dropdowns?
