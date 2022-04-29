@@ -16,9 +16,6 @@
 
 	$: step = (10 ** -precision).toString()
 
-	const get_js_number_of_current_value = () => parseFloat(number($store))
-	let input_value = get_js_number_of_current_value()
-
 	$: min !== null && typeof min !== `number` && console.error(`min should be of type number instead of "${typeof min}" ("${min}")`)
 	$: max !== null && typeof max !== `number` && console.error(`max should be of type number instead of "${typeof max}" ("${max}")`)
 	$: typeof precision !== `number` && console.error(`precision should be of type number instead of "${typeof precision}" ("${precision}")`)
@@ -36,19 +33,21 @@
 		}
 	}
 
-	$: handle_input_value(input_value)
-
-	$: input_value = get_js_number_of_current_value()
-
 	const validate_input_value = () => {
 		if (input_value === null || !$store.equal(input_value.toString())) {
-			input_value = get_js_number_of_current_value()
+			input_value = parseFloat(number($store))
 		}
 
 		if ($store.getPrecision() !== number(input_value.toString()).getPrecision()) {
 			input_element.value = $store.toString()
 		}
 	}
+
+	let input_value = null
+	
+	$: input_element && validate_input_value()
+
+	$: input_element && handle_input_value(input_value)
 </script>
 
 <InputStyle>
