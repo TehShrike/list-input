@@ -11,6 +11,8 @@
 		border-radius: 0;
 		width: 100%;
 		font-size: 16px;
+		
+		color: var(--input-text-color);
 	}
 
 	div :global(.input-style:disabled), div :global(input:disabled) {

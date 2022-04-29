@@ -123,7 +123,11 @@
 	{#each row_stores as { object_of_stores, key }, row_index (key)}
 		<div style="grid-template-columns: {grid_template_columns};" role=row>
 			{#each columns as column, column_index}
-				<div role=cell on:keypress={event => on_keypress(event, row_index, column_index)}>
+				<div 
+					role=cell 
+					on:keypress={event => on_keypress(event, row_index, column_index)}
+					style="--input-text-color: {row_index === row_stores.length - 1 ? `var(--mid-gray)` : `var(--black)`};"
+				>
 					<svelte:component
 						this={column.component}
 						store={object_of_stores[column.property]}
@@ -140,6 +144,11 @@
 	[role=table] {
 		display: grid;
 		gap: 1px;
+
+		--mid-gray: #888787;
+		--cell-outline-color: var(--mid-gray);
+		--focus-indicator-color: #6a6862;
+		--black: #333;
 	}
 
 	[role=row] {
@@ -156,15 +165,15 @@
 
 	[role=cell], [role=columnheader] {
 		box-sizing: border-box;
-		outline: 1px solid #888787;
+		outline: 1px solid var(--cell-outline-color);
 
 		overflow: hidden;
 	}
 
 	[role=cell]:focus-within {
 		border-radius: 2px;
-		-webkit-box-shadow: 0 0 0 2px #6a6862;
-		box-shadow: 0 0 0 2px #6a6862;
+		-webkit-box-shadow: 0 0 0 2px var(--focus-indicator-color);
+		box-shadow: 0 0 0 2px var(--focus-indicator-color);
 		z-index: 1;
 	}
 
