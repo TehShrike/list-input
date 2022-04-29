@@ -98,11 +98,13 @@
 
 	const focus_functions = {}
 
-	const on_keypress = (event, row_index, column_index) => {
+	const on_keypress = (event, row_key, column_index) => {
 		if (event.key === `Enter`) {
+			const row_index = row_stores.findIndex(({ key }) => key === row_key)
 			const target_row_index = row_index + (event.shiftKey ? -1 : 1)
-			const target_focus_function = focus_functions[`${target_row_index}-${column_index}`]
-			if (target_focus_function) {
+			if (row_stores[target_row_index]) {
+				const target_row_key = row_stores[target_row_index].key
+				const target_focus_function = focus_functions[`${target_row_key}-${column_index}`]
 				target_focus_function()
 			}
 		}
@@ -125,13 +127,13 @@
 			{#each columns as column, column_index}
 				<div 
 					role=cell 
-					on:keypress={event => on_keypress(event, row_index, column_index)}
+					on:keypress={event => on_keypress(event, key, column_index)}
 					style="--input-text-color: {row_index === row_stores.length - 1 ? `var(--mid-gray)` : `var(--black)`};"
 				>
 					<svelte:component
 						this={column.component}
 						store={object_of_stores[column.property]}
-						bind:focus={focus_functions[`${row_index}-${column_index}`]}
+						bind:focus={focus_functions[`${key}-${column_index}`]}
 						{...column.props}
 					/>
 				</div>
