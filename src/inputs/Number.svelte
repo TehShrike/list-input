@@ -37,6 +37,12 @@
 	}
 
 	const validate_input_value = () => {
+		if (input_value === null) {
+			$store = number(`0`)
+		}
+
+		// I think this might be extraneous now – I wish I could detect the difference between
+		// "empty" and "user typed jibberish"
 		if (input_value === null || !$store.equal(input_value.toString())) {
 			input_value = parseFloat(number($store))
 		}
@@ -46,7 +52,7 @@
 		}
 	}
 
-	let input_value = null
+	let input_value = parseFloat(number($store))
 	
 	$: input_element && validate_input_value()
 
