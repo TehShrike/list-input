@@ -38,7 +38,7 @@
 
 	const validate_input_value = () => {
 		if (input_value === null) {
-			$store = number(`0`)
+			$store = number(`0`).changePrecision(precision)
 		}
 
 		// I think this might be extraneous now – I wish I could detect the difference between
