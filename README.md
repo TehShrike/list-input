@@ -12,9 +12,7 @@ Not really, since it's a general spreadsheet and I'm aiming for something specia
 
 ### Future features
 
-- don't delete empty rows when focus is inside of them
 - dragging to reorder rows
-- enter/shift+enter should select cell contents like tab/shift+tab do
 - dropdowns?
 - resizable columns?
 	- emitting an event on resize so that you can store them in user preferences

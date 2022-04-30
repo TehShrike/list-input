@@ -3,6 +3,7 @@
 	import Checkbox from './inputs/Checkbox.svelte'
 	import NumberDisplay from './inputs/NumberDisplay.svelte'
 	import Text from './inputs/Text.svelte'
+	import DeleteButton from './inputs/DeleteButton.svelte'
 
 	import ListInput from './ListInput.svelte'
 
@@ -62,6 +63,10 @@
 		initial_fraction: 2.5,
 		header_text_align: `right`,
 		computed: ({ quantity, price, tax }) => quantity.times(price).plus(tax).changePrecision(2),
+	}, {
+		name: ``,
+		component: DeleteButton,
+		width: `24px`,
 	}]
 
 	const empty_row_factory = () => ({
@@ -96,6 +101,12 @@
 	$: total_calculated_from_rows = items.reduce(
 		(invoice_total, { total }) => invoice_total.plus(total ? total : zero), zero,
 	)
+
+	let row_stores
+
+	const on_delete = ({ detail: { index: index_to_delete } }) => {
+		row_stores = row_stores.filter((_, index) => index !== index_to_delete)
+	}
 </script>
 
 <div class="container">
@@ -112,9 +123,11 @@
 	<ListInput 
 		{columns}
 		bind:rows={items}
+		bind:row_stores
 		{external_stores}
 		{empty_row_factory}
 		{row_is_empty_predicate}
+		on:delete={on_delete}
 	/>
 
 	<div style="display: flex; justify-content: flex-end; gap: 8px;">

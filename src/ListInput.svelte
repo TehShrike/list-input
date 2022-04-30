@@ -1,5 +1,9 @@
 <script>
+	import { createEventDispatcher } from 'svelte'
+
 	import { computed as warg_computed, value as warg_value } from 'warg'
+
+	const dispatch = createEventDispatcher()
 
 	export let columns
 	export let rows
@@ -8,22 +12,22 @@
 	export let row_is_empty_predicate
 
 	$: grid_template_columns = columns.map(
-		({ initial_fraction }) => `${initial_fraction}fr`,
+		({ initial_fraction = 1, width }) => width ? width : `${initial_fraction}fr`,
 	).join(` `)
 
 	let row_key = 0
-	const row_to_stores = (row, row_name) => {
+	const row_to_stores = row => {
 		const value_stores = Object.fromEntries(
 			columns
 				.filter(({ computed }) => !computed)
 				.map(({ property }) => {
-					if (!(property in row)) {
-						throw new Error(`row ${row_name} was missing property "${property}"`)
-					}
-	
+					const value = property in row
+						? warg_value(row[property])
+						: warg_value(null)
+
 					return [
 						property,
-						warg_value(row[property]),
+						value,
 					]
 				}),
 		)
@@ -48,7 +52,7 @@
 	}
 
 	// row_stores is the canonical array that should be written to when state needs to change
-	let row_stores = rows.map((row, row_index) => row_to_stores(row, row_index))
+	export let row_stores = rows.map(row_to_stores)
 
 	const make_store_that_updates_when_array_contents_change = row_stores => {
 		const index_to_values_object = Object.fromEntries(row_stores.map(
@@ -84,7 +88,7 @@
 
 	
 		if (!last_row_is_empty) {
-			cleaned_up.push(row_to_stores(empty_row_factory(), `[row from empty row factory]`))
+			cleaned_up.push(row_to_stores(empty_row_factory()))
 			changed = true
 		}
 
@@ -149,6 +153,12 @@
 						bind:set_focus={focus_functions[`${key}-${column_index}`]}
 						on:focus={() => on_focus(key)}
 						on:blur={() => on_blur(key)}
+						on:column_event={({ detail: { event, ...rest } }) => dispatch(event, {
+							index: row_index,
+							row_key: key,
+							row_store: object_of_stores[column.property],
+							...rest,
+						})}
 						{...column.props}
 					/>
 				</div>
