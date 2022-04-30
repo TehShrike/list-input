@@ -44,7 +44,7 @@
 		// I think this might be extraneous now – I wish I could detect the difference between
 		// "empty" and "user typed jibberish"
 		if (input_value === null || !$store.equal(input_value.toString())) {
-			input_value = parseFloat(number($store))
+			input_value = parseFloat($store)
 		}
 
 		if ($store.getPrecision() !== number(input_value.toString()).getPrecision()) {
