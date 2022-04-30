@@ -3,7 +3,7 @@
 
 	let input_element
 
-	export const focus = () => input_element.focus()
+	export const set_focus = () => input_element.focus()
 
 	const on_cell_click = () => {
 		$store = !$store
@@ -16,6 +16,8 @@
 		type=checkbox 
 		bind:checked={$store} 
 		bind:this={input_element}
+		on:focus
+		on:blur
 	/>
 </div>
 

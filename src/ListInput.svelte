@@ -51,7 +51,6 @@
 	let row_stores = rows.map((row, row_index) => row_to_stores(row, row_index))
 
 	const make_store_that_updates_when_array_contents_change = row_stores => {
-		console.log(`make_store_that_updates_when_array_contents_change was called`, row_stores.length)
 		const index_to_values_object = Object.fromEntries(row_stores.map(
 			({ store_of_values }, index) => [ index, store_of_values ],
 		))
@@ -70,9 +69,12 @@
 	}
 
 	const clean_up_empty_rows_and_ensure_final_is_empty = () => {
+		const should_be_removed = ({ key, store_of_values }, index) => index !== row_stores.length - 1
+				&& key !== current_focused_row_key
+				&& row_is_empty_predicate(store_of_values.get())
+
 		let cleaned_up = row_stores.filter(
-			({ store_of_values }, index) => index === row_stores.length - 1
-				|| !row_is_empty_predicate(store_of_values.get()),
+			(row, index) => !should_be_removed(row, index),
 		)
 
 		let changed = cleaned_up.length !== row_stores.length
@@ -110,7 +112,18 @@
 		}
 	}
 
+	let current_focused_row_key = null
+
+	const on_focus = row_key => {
+		current_focused_row_key = row_key
+	}
 	
+	const on_blur = row_key => {
+		if (row_key === current_focused_row_key) {
+			current_focused_row_key = null
+		}
+		setTimeout(clean_up_empty_rows_and_ensure_final_is_empty, 0)
+	}
 </script>
 
 <div role=table>
@@ -133,7 +146,9 @@
 					<svelte:component
 						this={column.component}
 						store={object_of_stores[column.property]}
-						bind:focus={focus_functions[`${key}-${column_index}`]}
+						bind:set_focus={focus_functions[`${key}-${column_index}`]}
+						on:focus={() => on_focus(key)}
+						on:blur={() => on_blur(key)}
 						{...column.props}
 					/>
 				</div>

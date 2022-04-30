@@ -7,7 +7,7 @@
 
 	let input_element
 
-	export const focus = () => {
+	export const set_focus = () => {
 		input_element.focus()
 		input_element.select()
 	}
@@ -19,5 +19,7 @@
 		bind:value={$store}
 		disabled={disabled}
 		bind:this={input_element}
+		on:focus
+		on:blur
 	/>
 </InputStyle>
