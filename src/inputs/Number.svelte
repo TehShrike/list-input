@@ -12,7 +12,10 @@
 
 	let input_element
 
-	export const focus = () => input_element.focus()
+	export const focus = () => {
+		input_element.focus()
+		input_element.select()
+	}
 
 	$: step = (10 ** -precision).toString()
 

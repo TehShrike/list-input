@@ -7,7 +7,10 @@
 
 	let input_element
 
-	export const focus = () => input_element.focus()
+	export const focus = () => {
+		input_element.focus()
+		input_element.select()
+	}
 </script>
 
 <InputStyle>
