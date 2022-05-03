@@ -9,6 +9,8 @@
 
 	export const set_focus = () => {
 		input_element.focus()
+	}
+	const on_focus = () => {
 		input_element.select()
 	}
 </script>
@@ -20,6 +22,7 @@
 		disabled={disabled}
 		bind:this={input_element}
 		on:focus
+		on:focus={on_focus}
 		on:blur
 	/>
 </InputStyle>

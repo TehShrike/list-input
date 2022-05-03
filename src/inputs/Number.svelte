@@ -14,7 +14,6 @@
 
 	export const set_focus = () => {
 		input_element.focus()
-		input_element.select()
 	}
 
 	$: step = (10 ** -precision).toString()
@@ -57,6 +56,10 @@
 	$: input_element && validate_input_value()
 
 	$: input_element && handle_input_value(input_value)
+
+	const on_focus = () => {
+		input_element.select()
+	}
 </script>
 
 <InputStyle>
@@ -70,6 +73,7 @@
 		on:blur={validate_input_value}
 		bind:this={input_element}
 		on:focus
+		on:focus={on_focus}
 		on:blur
 		{...$$restProps}
 	/>
