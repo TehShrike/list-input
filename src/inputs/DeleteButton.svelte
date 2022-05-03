@@ -12,6 +12,12 @@
 			event: `delete`,
 		})
 	}
+
+	const on_keypress = event => {
+		if (event.key === `Enter`) {
+			event.preventDefault()
+		}
+	}
 </script>
 
 <div class="button-wrapper">
@@ -21,6 +27,7 @@
 		on:click={on_click}
 		on:focus
 		on:blur
+		on:keypress={on_keypress}
 	>
 		❌
 	</button>
