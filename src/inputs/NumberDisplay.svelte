@@ -5,7 +5,7 @@
 </script>
 
 <InputStyle>
-	<div class="input-style">
+	<div class="input-style handles-own-background">
 		{#if $store !== null}
 			{$store.toString()}
 		{/if}
@@ -14,6 +14,11 @@
 
 <style>
 	div {
+		align-self: stretch;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
 		text-align: right;
 		font-variant-numeric: tabular-nums;
 		width: 100%;

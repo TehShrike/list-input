@@ -3,6 +3,15 @@
 </div>
 
 <style>
+	div {
+		min-height: 100%;
+		display: flex;
+	}
+
+	div:focus-within {
+		background-color: var(--focus-background-color);
+	}
+
 	div :global(.input-style), div :global(input) {
 		box-sizing: border-box;
 		margin: 0;
@@ -15,14 +24,19 @@
 		color: var(--input-text-color);
 	}
 
+	div :global(.input-style:not(.handles-own-background)),
+	div :global(input:not(.handles-own-background)),
+	div :global(.input-style:disabled:not(.handles-own-background)),
+	div :global(input:disabled:not(.handles-own-background)) {
+		background-color: transparent;
+	}
+
 	div :global(.input-style:disabled), div :global(input:disabled) {
 		color: gray;
-		background-color: transparent;
 	}
 
 
 	div :global(.input-style:focus), div :global(input:focus) {
-		background-color: floralwhite;
 		outline: none;
 	}
 </style>
