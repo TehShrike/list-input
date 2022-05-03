@@ -3,6 +3,7 @@
 	import Checkbox from './inputs/Checkbox.svelte'
 	import NumberDisplay from './inputs/NumberDisplay.svelte'
 	import Text from './inputs/Text.svelte'
+	import TextArea from './inputs/TextArea.svelte'
 	import DeleteButton from './inputs/DeleteButton.svelte'
 
 	import ListInput from './ListInput.svelte'
@@ -24,7 +25,7 @@
 	}, {
 		name: `Description`,
 		property: `description`,
-		component: Text,
+		component: TextArea,
 		initial_fraction: 6,
 	}, {
 		name: `Quantity`,
@@ -83,7 +84,7 @@
 
 	let items = [{
 		quantity: number(`2`),
-		description: `Pants`,
+		description: `Pants.  This is a line that will grow.  How much will it grow?  Well, potentially quite a bit.`,
 		taxable: true,
 		price: number(`20000.01`),
 	}, {
