@@ -174,7 +174,8 @@
 
 		--mid-gray: #888787;
 		--cell-outline-color: var(--mid-gray);
-		--focus-indicator-color: #6a6862;
+		--focus-border-color: #6a6862;
+		--focus-background-color: floralwhite;
 		--black: #333;
 	}
 
@@ -199,8 +200,8 @@
 
 	[role=cell]:focus-within {
 		border-radius: 2px;
-		-webkit-box-shadow: 0 0 0 2px var(--focus-indicator-color);
-		box-shadow: 0 0 0 2px var(--focus-indicator-color);
+		-webkit-box-shadow: 0 0 0 2px var(--focus-border-color);
+		box-shadow: 0 0 0 2px var(--focus-border-color);
 		z-index: 1;
 	}
 

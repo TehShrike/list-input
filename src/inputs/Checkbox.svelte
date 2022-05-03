@@ -31,7 +31,7 @@
 	}
 
 	.checkbox-wrapper:focus-within {
-		background-color: floralwhite;
+		background-color: var(--focus-background-color);
 	}
 
 	input {

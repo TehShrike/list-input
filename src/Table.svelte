@@ -24,6 +24,6 @@
 	}
 
 	table :global(th) :global(input:focus) {
-		background-color: floralwhite;
+		background-color: var(--focus-background-color);
 	}
 </style>
