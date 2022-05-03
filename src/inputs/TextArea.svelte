@@ -13,6 +13,11 @@
 	const on_focus = () => {
 		input_element.select()
 	}
+	const on_keypress = event => {
+		if (event.key === `Enter`) {
+			event.preventDefault()
+		}
+	}
 </script>
 
 <InputStyle>
@@ -29,6 +34,7 @@
 			on:focus
 			on:focus={on_focus}
 			on:blur
+			on:keypress={on_keypress}
 		/>		
 	</div>
 </InputStyle>
