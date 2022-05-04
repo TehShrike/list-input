@@ -1,8 +1,7 @@
 <script>
-	import Number from './inputs/Number.svelte'
+	import NumberInput from './inputs/NumberInput.svelte'
 	import Checkbox from './inputs/Checkbox.svelte'
 	import NumberDisplay from './inputs/NumberDisplay.svelte'
-	import Text from './inputs/Text.svelte'
 	import TextArea from './inputs/TextArea.svelte'
 	import DeleteButton from './inputs/DeleteButton.svelte'
 
@@ -30,7 +29,7 @@
 	}, {
 		name: `Quantity`,
 		property: `quantity`,
-		component: Number,
+		component: NumberInput,
 		initial_fraction: 2,
 		header_text_align: `right`,
 		props: {
@@ -40,7 +39,7 @@
 	}, {
 		name: `Price`,
 		property: `price`,
-		component: Number,
+		component: NumberInput,
 		initial_fraction: 3,
 		header_text_align: `right`,
 		props: {
@@ -113,7 +112,7 @@
 <div class="container">
 	<label>
 		Tax rate
-		<Number
+		<NumberInput
 			bind:store={external_stores.tax_rate}
 			precision={3}
 			min={0}
